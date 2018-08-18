@@ -1,0 +1,4 @@
+; screen.asm
+Forever                          = $C007
+RESET                            = $C000
+NMI                              = $C00A
