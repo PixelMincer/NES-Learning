@@ -29,14 +29,14 @@ LoadPalettesLoop:
 	BNE LoadPalettesLoop
 	
 	; set up sprites
-	LDA #$80
-	STA $0200			; put sprite 0 in center ($80) of screen vertically
-	STA $0203			; put sprite 0 in center ($80) of screen horizontally
-	LDA #$00
-	STA $0201			; tile number = 0
-	LDA #$01
-	STA $0202			; color palette = 1, no flipping (refers to a set of 4 out of the 16 colors)
-	
+	LDX #$00
+SpriteRenderLoop:
+	LDA SpriteMetaData, x
+	STA $0200, x
+	INX
+	CPX #$C0			; Compare x to hex $C0, decimal 12
+	BNE SpriteRenderLoop
+
 	LDA #%10000000		; enable NMI, sprites from pattern table 0
 	STA $2000
 	
@@ -64,6 +64,12 @@ NMI:
 PaletteData:
 	.db $0F, $31, $32, $33, $0F, $35, $36, $37, $0F, $39, $3A, $3B, $0F, $3D, $3E, $0F	; background palette data
 	.db $0F, $1C, $15, $14, $0F, $02, $38, $3C, $0F, $1C, $15, $14, $0F, $02, $38, $3C	; sprite palette data
+	
+SpriteMetaData:
+	.db $80, $32, $01, $80	; sprite 0
+	.db $80, $33, $01, $88	; sprite 1
+	.db $88, $42, $01, $80	; sprite 2
+	.db $88, $43, $01, $88	; sprite 3
 
 	.org $FFFA
 	.dw NMI
