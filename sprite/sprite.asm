@@ -34,7 +34,7 @@ SpriteRenderLoop:
 	LDA SpriteMetaData, x
 	STA $0200, x
 	INX
-	CPX #$C0			; Compare x to hex $C0, decimal 12
+	CPX #$10			; Compare x to hex $10, decimal 16
 	BNE SpriteRenderLoop
 
 	LDA #%10000000		; enable NMI, sprites from pattern table 0
